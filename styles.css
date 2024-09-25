@@ -1,0 +1,248 @@
+/* Basic Page Setup */
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #2e2e2e;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Background Wrapper */
+.background-wrapper {
+    position: relative;
+    min-height: 100vh; /* Full viewport height */
+    background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGNjNWtzbDh1cDlveXJjMHhqNHg2aGs0cjlmMzc4ZWpsMHJ4MTRhciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xTiTnxpQ3ghPiB2Hp6/giphy.gif') no-repeat center center fixed;
+    background-size: cover;
+    padding: 1%;
+}
+
+/* Main Content Container */
+.content-container {
+    max-width: 1000px;
+    margin: 0 auto 2%;
+    padding: 3%;
+    background-color: #f4f4f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+/* Headings */
+h1, h2, h3 {
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-bottom: 0.5em;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; text-align: center;}
+h3 { font-size: 1.5rem; }
+
+/* Navigation Bar */
+nav {
+    background-color: #1e3a8a;
+    color: #f4f4f9;
+    padding: 1rem;
+    position: relative;
+    z-index: 1000;
+    transition: position 0.3s, top 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav.sticky {
+    position: fixed;
+    top: 0;
+    left: 2%;
+    width: 10%;
+    background-color: #1e3a8a;
+    padding: 1.25rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+nav.sticky ul {
+    display: block;
+    padding: 0;
+}
+
+nav.sticky ul li {
+    margin: 0.625rem 0;
+}
+
+nav.sticky ul li a {
+    display: block;
+    padding: 0.625rem;
+    border-radius: 0.3125rem;
+}
+
+nav.sticky ul li a:hover {
+    background-color: #0056b3;
+}
+
+/* Media query for smaller viewports */
+@media (max-width: 768px) {
+    nav {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        padding: 0.625rem 0;
+    }
+
+    nav.sticky {
+        position: fixed;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        box-shadow: none;
+    }
+
+    nav.sticky ul {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        margin: 0;
+    }
+
+    nav.sticky ul li {
+        margin: 0 0.625rem;
+    }
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin: 0 1rem;
+}
+
+nav a {
+    color: #f4f4f9;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.625rem;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #ff6f61;
+}
+
+/* Section Styling */
+section {
+    padding: 0.625rem 0;
+}
+
+/* Tabs Navigation */
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 1.25rem;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 0.625rem 1rem;
+    background-color: #f9f9f9;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: #333;
+    transition: background-color 0.3s;
+}
+
+.tab-button:not(:last-child) {
+    border-right: 1px solid #ddd;
+}
+
+.tab-button.active {
+    background-color: #fff;
+    color: #007BFF;
+    border-bottom: 2px solid #fff;
+}
+
+.tab-content {
+    display: none;
+    padding: 1.25rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0 0.3125rem 0.3125rem 0.3125rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Project Item */
+#projects {
+    overflow-y: auto;
+    height: 80vh;
+}
+
+.project-item {
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.625rem;
+    overflow: hidden;
+}
+
+.project-item h3 {
+    margin: 0;
+    color: #007BFF;
+}
+
+.project-item ul {
+    margin: 0.625rem 0 0 1.25rem;
+    list-style: disc;
+    padding: 0;
+}
+
+.project-item ul li {
+    margin-bottom: 0.3125rem;
+    color: #444;
+}
+
+/* Skills Section */
+#skills-section {
+    background-color: #f4f4f9;
+}
+
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.skills-category {
+    flex: 1;
+    min-width: 250px;
+    margin: 0.625rem;
+    padding: 0.625rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 0.3125rem;
+}
+
+.skills-category ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.skills-category ul li {
+    margin-bottom: 0.625rem;
+}
+
+/* Footer */
+footer {
+    background: #f4f4f9;
+    color: #2e2e2e;
+    text-align: center;
+    padding: 1.25rem;
+    border-top: 1px solid #ddd;
+}
