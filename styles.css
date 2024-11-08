@@ -62,7 +62,7 @@ nav.sticky {
 
 
 nav.sticky ul {
-    display: block;
+    display: flex;
     padding: 0;
 }
 
