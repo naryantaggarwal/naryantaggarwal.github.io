@@ -46,7 +46,7 @@ nav {
     padding: 1rem;
     position: relative;
     z-index: 9999;
-    transition: position 0.3s, top 0.3s;
+    transition: position 0.3s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -85,35 +85,6 @@ nav.sticky ul li a {
 
 nav.sticky ul li a:hover {
     background-color: #0056b3;
-}
-
-/* Media query for smaller viewports */
-@media (max-width: 768px) {
-    nav {
-        position: sticky;
-        top: 0;
-        width: 100%;
-        padding: 0.625rem 0;
-    }
-
-    nav.sticky {
-        position: fixed;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        box-shadow: none;
-    }
-
-    nav.sticky ul {
-        display: flex;
-        flex-direction: row;
-        padding: 0;
-        margin: 0;
-    }
-
-    nav.sticky ul li {
-        margin: 0 0.625rem;
-    }
 }
 
 nav ul {
