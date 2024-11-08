@@ -45,13 +45,14 @@ nav {
     color: #f4f4f9;
     padding: 1rem;
     position: relative;
-    z-index: 10000;
+    z-index: 9999;
     transition: position 0.3s, top 0.3s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 nav.sticky {
     position: fixed;
+    margin: 1rem;
     top: 0;
     left: 0; /* Keep it aligned to the top-left */
     width: 100%; /* Make it full-width */
