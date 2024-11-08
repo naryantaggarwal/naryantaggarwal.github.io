@@ -53,10 +53,8 @@ nav {
 nav.sticky {
     position: fixed;
     z-index: 9999;
-    top: 0;
-    left: 0; /* Keep it aligned to the top-left */
     width: 60%; /* Make it full-width */
-    padding: 1rem;
+    padding: 0.5rem;
     background-color: #1e3a8a; /* Background color for visibility */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
 }
