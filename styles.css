@@ -15,7 +15,6 @@ body {
     min-height: 100vh; /* Full viewport height */
     background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGNjNWtzbDh1cDlveXJjMHhqNHg2aGs0cjlmMzc4ZWpsMHJ4MTRhciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xTiTnxpQ3ghPiB2Hp6/giphy.gif') no-repeat center center fixed;
     background-size: cover;
-    padding: 1%;
 }
 
 /* Main Content Container */
