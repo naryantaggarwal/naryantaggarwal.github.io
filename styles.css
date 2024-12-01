@@ -52,6 +52,7 @@ nav {
 
 nav.sticky {
     background-color: #1e3a8a;
+    margin: 1%;
     color: #f4f4f9;
     padding: 1rem;
     position: fixed;
