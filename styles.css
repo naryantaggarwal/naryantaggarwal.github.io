@@ -46,7 +46,7 @@ nav {
     padding: 1rem;
     position: relative;
     z-index: 9999;
-    transition: position 0.3s;
+    /*transition: position 0.3s;*/
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
