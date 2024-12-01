@@ -51,12 +51,13 @@ nav {
 }
 
 nav.sticky {
+    background-color: #1e3a8a;
+    color: #f4f4f9;
+    padding: 1rem;
     position: fixed;
     z-index: 9999;
-    width: 100%; /* Make it full-width */
-    padding: 0.5rem;
-    background-color: #1e3a8a; /* Background color for visibility */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    /*transition: position 0.3s;*/
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 nav ul {
@@ -68,14 +69,19 @@ nav ul {
 }
 
 nav.sticky ul {
+    list-style: none;
     display: flex;
     justify-content: center;
-    flex-direction: row;
     padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin: 0 1rem;
 }
 
 nav.sticky ul li {
-    margin: 0.625rem 0;
+    margin: 0 1rem;
 }
 
 nav.sticky ul li a {
@@ -86,18 +92,6 @@ nav.sticky ul li a {
 
 nav.sticky ul li a:hover {
     background-color: #0056b3;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    padding: 0;
-    margin: 0;
-}
-
-nav ul li {
-    margin: 0 1rem;
 }
 
 nav a {
