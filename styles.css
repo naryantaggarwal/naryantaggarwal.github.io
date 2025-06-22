@@ -207,6 +207,10 @@ footer {
         padding: 0;
     }
 
+    nav {
+        display: none;
+    }
+
     nav ul {
         flex-direction: column;
         align-items: center;
