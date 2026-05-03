@@ -1,1309 +1,1111 @@
-i<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Naryan Aggarwal's Portfolio</title>
-    <!-- Add CSS links here -->
-	<link rel="stylesheet" href="styles.css">
-	<script>
-		function showTab(tabId) {
-			// Hide all tab content
-			var contents = document.getElementsByClassName('tab-content');
-			for (var i = 0; i < contents.length; i++) {
-				contents[i].classList.remove('active');
-			}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naryan Aggarwal — Business Data Analyst</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --bg:        #141414;
+      --surface:   #1c1c1c;
+      --surface2:  #242424;
+      --border:    rgba(255,255,255,0.08);
+      --accent:    #c0392b;
+      --accent2:   #e05a4a;
+      --text:      #e8e2da;
+      --muted:     #8a8278;
+      --serif:     'DM Serif Display', Georgia, serif;
+      --sans:      'DM Sans', system-ui, sans-serif;
+      --nav-h:     64px;
+      --radius:    10px;
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
 
-			// Deactivate all tab buttons
-			var buttons = document.getElementsByClassName('tab-button');
-			for (var i = 0; i < buttons.length; i++) {
-				buttons[i].classList.remove('active');
-			}
+    /* ── RESET ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 1rem;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent2); text-decoration: none; transition: color var(--transition); }
+    a:hover { color: var(--text); }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
 
-			// Show the selected tab content and activate the corresponding button
-			document.getElementById(tabId).classList.add('active');
-			document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
-		}
-	</script>
+    /* ── NOISE OVERLAY ──────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.5;
+    }
+
+    /* ── NAV ────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(20,20,20,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      transition: background var(--transition);
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color var(--transition), background var(--transition);
+    }
+    .nav-links a:hover { color: var(--text); background: var(--surface2); }
+    .nav-links .nav-cta {
+      background: var(--accent);
+      color: var(--text) !important;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+    }
+    .nav-links .nav-cta:hover { background: var(--accent2); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      background: none; border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile drawer */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      background: rgba(20,20,20,0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      z-index: 9998;
+      flex-direction: column;
+      gap: 0.5rem;
+      transform: translateY(-10px);
+      opacity: 0;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+    .mobile-menu.open {
+      display: flex;
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .mobile-menu a {
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.9rem;
+    }
+    .mobile-menu a:hover { color: var(--text); }
+
+    /* ── LAYOUT ─────────────────────────────────────────── */
+    .page-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    section {
+      padding: 5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-child { border-bottom: none; }
+
+    /* ── SECTION LABELS ─────────────────────────────────── */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--accent);
+    }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: var(--nav-h);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::after {
+      content: 'NA';
+      position: absolute;
+      right: -2%;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--serif);
+      font-size: clamp(14rem, 22vw, 22rem);
+      color: rgba(255,255,255,0.025);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      margin-bottom: 1.75rem;
+      animation: fadeUp 0.8s both;
+    }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      line-height: 1.08;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+      animation: fadeUp 0.9s 0.1s both;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--muted);
+    }
+    .hero-bio {
+      max-width: 540px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 1s 0.2s both;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 1s 0.3s both;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--text);
+    }
+    .btn-primary:hover { background: var(--accent2); color: var(--text); transform: translateY(-2px); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--muted); color: var(--text); transform: translateY(-2px); }
+
+    .hero-pills {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+      animation: fadeUp 1s 0.4s both;
+    }
+    .pill {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── ABOUT ───────────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .about-text p strong { color: var(--text); }
+    .about-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .stat-card:hover { border-color: var(--accent); transform: translateX(4px); }
+    .stat-card .num {
+      font-family: var(--serif);
+      font-size: 2rem;
+      color: var(--text);
+      line-height: 1;
+    }
+    .stat-card .lbl {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ── EXPERIENCE ──────────────────────────────────────── */
+    .exp-list { display: flex; flex-direction: column; gap: 0; }
+    .exp-item {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      transition: var(--transition);
+    }
+    .exp-item:first-child { border-top: none; }
+    .exp-item:hover .exp-title { color: var(--accent2); }
+    .exp-meta {
+      padding-top: 0.2rem;
+    }
+    .exp-date {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+    .exp-company {
+      font-size: 0.82rem;
+      color: var(--accent);
+      margin-top: 0.3rem;
+      font-weight: 500;
+    }
+    .exp-body {}
+    .exp-title {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+      transition: color var(--transition);
+    }
+    .exp-desc {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.75;
+    }
+    .exp-desc li {
+      padding-left: 1rem;
+      position: relative;
+      margin-bottom: 0.4rem;
+    }
+    .exp-desc li::before {
+      content: '—';
+      position: absolute; left: 0;
+      color: var(--accent);
+      font-size: 0.8rem;
+    }
+    .exp-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(192,57,43,0.12);
+      border: 1px solid rgba(192,57,43,0.25);
+      padding: 0.18rem 0.55rem;
+      border-radius: 4px;
+      margin-left: 0.6rem;
+      vertical-align: middle;
+      font-family: var(--sans);
+      font-size: 0.68rem;
+    }
+
+    /* ── SKILLS ──────────────────────────────────────────── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .skill-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: border-color var(--transition);
+    }
+    .skill-block:hover { border-color: rgba(192,57,43,0.4); }
+    .skill-block h3 {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .skill-tag {
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      transition: color var(--transition), border-color var(--transition);
+    }
+    .skill-tag:hover { color: var(--text); border-color: var(--muted); }
+
+    /* ── PROJECTS ────────────────────────────────────────── */
+    .proj-tabs {
+      display: flex;
+      gap: 0.25rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .proj-tabs::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      position: relative;
+      transition: color var(--transition);
+      white-space: nowrap;
+    }
+    .tab-btn::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transition: transform var(--transition);
+    }
+    .tab-btn.active { color: var(--text); }
+    .tab-btn.active::after { transform: scaleX(1); }
+    .tab-btn:hover { color: var(--text); }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .proj-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      cursor: default;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .proj-card:hover { border-color: rgba(192,57,43,0.4); transform: translateY(-2px); }
+    .proj-card h3 {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+    .proj-card ul {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+    .proj-card ul li {
+      padding-left: 1rem;
+      position: relative;
+      margin-bottom: 0.3rem;
+    }
+    .proj-card ul li::before {
+      content: '—';
+      position: absolute; left: 0;
+      color: var(--accent);
+    }
+
+    /* ── EDUCATION ───────────────────────────────────────── */
+    .edu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .edu-card h3 {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    .edu-card .school {
+      color: var(--accent2);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .edu-card .edu-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+    .edu-badge {
+      background: rgba(192,57,43,0.12);
+      border: 1px solid rgba(192,57,43,0.3);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      text-align: center;
+    }
+    .edu-badge .gpa { font-family: var(--serif); font-size: 1.5rem; color: var(--text); }
+    .edu-badge .gpa-lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .cert-list { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .cert-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      transition: border-color var(--transition);
+    }
+    .cert-item:hover { border-color: rgba(192,57,43,0.4); }
+    .cert-icon {
+      width: 36px; height: 36px;
+      background: rgba(192,57,43,0.12);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent);
+      font-size: 1rem;
+    }
+    .cert-name { font-weight: 500; font-size: 0.9rem; color: var(--text); }
+    .cert-issuer { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── CONTACT ─────────────────────────────────────────── */
+    .contact-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 3rem;
+      text-align: center;
+    }
+    .contact-block h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .contact-block p {
+      color: var(--muted);
+      max-width: 440px;
+      margin: 0 auto 2rem;
+    }
+    .contact-links {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── ANIMATIONS ──────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      #hero { min-height: 90vh; }
+      #hero::after { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .exp-meta { display: flex; align-items: center; gap: 1rem; }
+      .contact-block { padding: 2rem 1.5rem; }
+      section { padding: 3.5rem 0; }
+    }
+    @media (max-width: 480px) {
+      .page-wrap { padding: 0 1.25rem; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { justify-content: center; }
+    }
+  </style>
 </head>
-
 <body>
 
-	<div class="background-wrapper">
-		<nav id="navbar">
-			<ul>
-				<li><a href="#about-anchor">About Me</a></li>
-				<li><a href="#education">Education</a></li>
-				<li><a href="#skills-section">Skills</a></li>
-				<li><a href="#projects">Projects</a></li>
-				<li><a href="#experience">Experience</a></li>
-				<li><a href="https://www.linkedin.com/in/naryana/">LinkedIn</a></li>
-				<li><a href="https://github.com/naryantaggarwal">GitHub</a></li>
-				<li><a href="#contact">Contact</a></li>
-			</ul>
-		</nav>
-		<div class="content-container">	
-			<!-- Header Section -->
-			<header>
-				<a id="about-anchor"></a>
-				<div class="container">
-					<h1>Naryan Aggarwal</h1>
-					<p>Data Scientist / Analyst</p>
-				</div>
-			</header>
-		</div>
-		
-		<div class="content-container">	
-			<!-- About Section -->
-			<section id="about">
-				<div class="container">
-					<h2>About Me</h2>
-					<p>As a graduate with a Bachelor's degree in Business Analytics, I am highly motivated 
-						to explore opportunities that apply my analytical and business skills to data-driven decision-making. 
-						With a solid foundation in statistical analysis, data visualization, and Python, I am passionate about 
-						investing in opportunities with both small businesses and large corporations. My goal is to extract 
-						insights from complex datasets to drive innovation and efficiency. I am excited to embark on a career 
-						path where I can make an impact by transforming data into valuable solutions..</p>
-				</div>
-			</section>
-		</div>
-
-		<div class="content-container">
-			<!-- Education Section -->
-			<section id="education">
-				<div class="container">
-					<h2>Education</h2>
-					<div class="education-item">
-						<h4>Bachelors of Business in Business Analytics – GPA: 3.5</h3>
-						<p>Benedictine University, Lisle, IL | May 2025</p>
-					</div>
-					<p>See more on <a href="https://www.linkedin.com/in/naryana/">LinkedIn</a>.</p>
-				</div>
-			</section>
-		</div>
-
-		<div class="content-container">
-			<!-- Skills Section -->
-			<section id="skills-section">
-				<h2>Skills</h2>
-				<div class="skills-container">
-					<!-- Technical Skills -->
-					<div class="skills-category">
-						<h3>Technical Skills</h3>
-						<ul>
-							<li><strong>Programming Languages:</strong> Python, SQL, Bash, HTML, CSS, JavaScript, Java</li>
-							<li><strong>Data Analysis:</strong> NAIVE Method, Causal Regression, Multilinear Regression, ARIMA</li>
-							<li><strong>Tools & Technologies:</strong> Artificial Intelligence, Excel, MySQL, Redshift, AWS, Google Workspace, Steam API</li>
-							<li><strong>Software:</strong> Adobe Photoshop, Adobe Illustrator, Blender, Cinema4D</li>
-							<li><strong>Data Visualization:</strong> Matplotlib, Seaborn, Tableau</li>
-							<li><strong>Fine Arts:</strong> Music Composition, Animation, Drawing, FLStudio, FinalCut, DaVinci Resolve, Photoshop, Krita</li>
-						</ul>
-					</div>
-
-					<!-- Soft Skills -->
-					<div class="skills-category">
-						<h3>Soft Skills</h3>
-						<ul>
-							<li><strong>Analytical Thinking:</strong> Proven ability to analyze complex datasets and provide actionable insights.</li>
-							<li><strong>Artificial Intelligence Proficiency:</strong> Experience and proficiency in utilizing AI in analysis and integrations.</li>
-							<li><strong>Project Management:</strong> Experience in leading projects, organizing tasks, and managing deadlines.</li>
-							<li><strong>Communication:</strong> Effective communicator with experience in client interactions and team collaborations.</li>
-							<li><strong>Relationship Management:</strong> Nurturing long-term business relationships to foster mutual growth.</li>
-							<li><strong>Problem-Solving:</strong> Strong problem-solving skills demonstrated through various projects and internships.</li>
-							<li><strong>Adaptability:</strong> Ability to quickly learn new technologies and adapt to changing project requirements.</li>
-							<li><strong>Consultative Selling:</strong> Providing solutions that align with the specific needs of clients.</li>
-						</ul>
-					</div>
-				</div>
-			</section>
-		</div>
-		
-		
-		<div class="content-container">
-			<!-- Projects Section with Tabs -->
-			<section id="projects">
-				<div class="container">
-					<h2>Projects</h2>
-
-					<!-- Tab Navigation -->
-					<div class="tabs">
-						<button class="tab-button active" onclick="showTab('tab1')">Most Recent Projects</button>
-						<button class="tab-button" onclick="showTab('tab2')">Work Projects</button>
-						<button class="tab-button" onclick="showTab('tab3')">Academic Projects</button>
-						<button class="tab-button" onclick="showTab('tab4')">Personal Projects</button>
-					</div>
-
-					<!-- Tab Content -->
-					<div id="tab1" class="tab-content active">
-						<!-- Current Projects -->
-						<!-- Enrollment Data Analysis -->
-						<div class="project-item">
-							<h3>Enrollment Data Analysis (Current)</h3>
-							<ul>
-								<li>Analyzing complex enrollment datasets by extracting, transforming, and visualizing data in Tableau to identify key trends across demographics, retention rates, and academic programs across 5 years.</li>
-								<li>Delivered a comprehensive performance review of enrollment strategies, highlighting data-driven insights and pinpointing areas for improvement</li>
-								<li>Identified and addressed a 30% drop in student retention, presenting actionable insights that contributed to measurable recovery efforts.</li>
-								<li>Recommended strategic actions to enhance retention and program effectiveness, influencing executive decision-making, and increase ROI, as well as increase student capture by 40%.</li>
-								<li>Integrating demographic, labor market, and tuition perception data to align recommendations with Chicago-area student expectations.</li>
-								<li>Presenting findings to the University President and Board of Trustees, demonstrating high-level communication and stakeholder engagement.</li>
-							</ul>
-						</div>
-						
-						<!-- Clinical Website Text Analysis and Update -->
-						<div class="project-item">
-							<h3>Clinical Website Text Analysis and Update (Freelance) (Current)</h3>
-							<ul>
-								<li>Processing data for 4,500+ U.S. cities using Python, Excel, and Shell scripting, sourcing up-to-date statistics from the CDC.</li>
-								<li>Developing automated workflows to clean, transform, and analyze public health data, ensuring accuracy and consistency across all entries.</li>
-								<li>Created distinct, human-readable summaries for each city’s statistics to support tailored content delivery.</li>
-								<li>Collaborated with business stakeholders and technical teams to align data outputs with project goals, ensuring both technical integrity and business usability.</li>
-							</ul>
-						</div>
-						
-						<!-- Health Clinic Data Analysis -->
-						<div class="project-item">
-							<h3>Health Clinic Data Analysis</h3>
-							<ul>
-								<li>Used Python for natural language processing and analysis on over 20,000 records of clinics nationwide.</li>
-								<li>Created visualizations and usable information on city, state, and national levels.</li>
-								<li>Performed large-scale de-duplication to enhance data accuracy and relevance.</li>
-							</ul>
-						</div>
-					</div>
-
-					<div id="tab2" class="tab-content">
-						<!-- Work Projects -->
-						<!-- Enrollment Data Analysis -->
-						<div class="project-item">
-							<h3>Enrollment Data Analysis</h3>
-							<ul>
-								<li>Analyzing complex enrollment datasets by extracting, transforming, and visualizing data in Tableau to identify key trends across demographics, retention rates, and academic programs across 5 years.</li>
-								<li>Delivered a comprehensive performance review of enrollment strategies, highlighting data-driven insights and pinpointing areas for improvement</li>
-								<li>Identified and addressed a 30% drop in student retention, presenting actionable insights that contributed to measurable recovery efforts.</li>
-								<li>Recommended strategic actions to enhance retention and program effectiveness, influencing executive decision-making, and increase ROI, as well as increase student capture by 40%.</li>
-								<li>Integrating demographic, labor market, and tuition perception data to align recommendations with Chicago-area student expectations.</li>
-								<li>Presenting findings to the University President and Board of Trustees, demonstrating high-level communication and stakeholder engagement.</li>
-							</ul>
-						</div>
-
-						<!-- Clinical Website Text Analysis and Update -->
-						<div class="project-item">
-							<h3>Clinical Website Text Analysis and Update (Freelance)</h3>
-							<ul>
-								<li>Processing data for 4,500+ U.S. cities using Python, Excel, and Shell scripting, sourcing up-to-date statistics from the CDC.</li>
-								<li>Developing automated workflows to clean, transform, and analyze public health data, ensuring accuracy and consistency across all entries.</li>
-								<li>Created distinct, human-readable summaries for each city’s statistics to support tailored content delivery.</li>
-								<li>Collaborated with business stakeholders and technical teams to align data outputs with project goals, ensuring both technical integrity and business usability.</li>
-							</ul>
-						</div>
-						
-						<!-- Health Clinic Data Analysis -->
-						<div class="project-item">
-							<h3>Health Clinic Data Analysis</h3>
-							<ul>
-								<li>Used Python for natural language processing and analysis on over 20,000 records of clinics nationwide.</li>
-								<li>Created visualizations and usable information on city, state, and national levels.</li>
-								<li>Performed large-scale de-duplication to enhance data accuracy and relevance.</li>
-							</ul>
-						</div>
-						
-						<!-- Network Backup Program -->
-						<div class="project-item">
-							<h3>Network Backup Program</h3>
-							<ul>
-								<li>Developed using Bash and shell scripting, allowing the backup of up to 10 systems into an organized and encrypted file.</li>
-								<li>Supports Linux, MacOS, Windows, and mixed environments, with automation timers for regular backups.</li>
-							</ul>
-						</div>
-
-						<!-- MySQL Database Log Analyzer -->
-						<div class="project-item">
-							<h3>MySQL Database Log Analyzer</h3>
-							<ul>
-								<li>Analyzes MySQL logs to generate reports on new IPs, errors, login frequencies, and more.</li>
-								<li>Improves speed and efficiency of reviewing backend performance across multiple databases.</li>
-							</ul>
-						</div>
-
-						<!-- Process Monitor -->
-						<div class="project-item">
-							<h3>Process Monitor</h3>
-							<ul>
-								<li>Monitors specified processes for memory and storage usage, CPU and network performance, and detects anomalous behavior.</li>
-							</ul>
-						</div>
-
-						<!-- System Info Reporter -->
-						<div class="project-item">
-							<h3>System Info Reporter</h3>
-							<ul>
-								<li>Generates health and performance reports for the hosted system, suitable for integration with complex analyzers.</li>
-							</ul>
-						</div>
-						
-					</div>
-
-					<div id="tab3" class="tab-content">
-						<!-- Academic Projects -->
-						<!-- ARIMA Models -->
-						<div class="project-item">
-							<h3>ARIMA Models</h3>
-							<ul>
-								<li>Developed ARIMA (AutoRegressive Integrated Moving Average) models using Python to forecast future values in time series data. This approach was employed to analyze historical data and generate predictions, focusing on economic indicators and other trend-sensitive datasets.</li>
-								<pre><code class="language-python">
-from pandas import DataFrame, read_excel, concat
-from matplotlib import pyplot as plt
-from statsmodels.tsa.api import acf, pacf, ARIMA, arma_order_select_ic
-
-def correlogramAsDataFrame(correlogram, partial=False):
-	# Find the correlogram with confidence intervals for each lag
-	if partial:
-		label="PACF"
-	else:
-		label="ACF"
-	vals, confints = correlogram
-	# Separate the lower bounds and upper bounds of the confidence intervals
-	lower = confints.take(indices=0, axis=1)
-	upper = confints.take(indices=1, axis=1)
-
-	# Print the correlogram in text form for preciser reading
-	return DataFrame({label: vals, "Lower": lower, "Upper": upper})
-
-def plotCorrelogram(correlogram):
-	# Plot the correlogram with the confidence intervals for each lag
-	plt.plot(correlogram.iloc[:,0], color="gray", label=correlogram.columns[0])
-	plt.plot(correlogram[["Lower"]], color="black", linestyle="dashed", label="Lower")
-	plt.plot(correlogram[["Upper"]], color="black", linestyle="dotted", label="Upper")
-	plt.legend()
-	plt.show()
-
-def diffSeries(series):
-	return [series[i+1]-series[i] for i in range(len(series) - 1)]
-
-# Access the data set; `sheet_name=None` means import all sheets from the workbook.
-data=read_excel("https://www.census.gov/construction/nrc/xls/starts_cust.xlsx", sheet_name=None, header=[5, 5, 5, 5])
-
-# Extract rows 0 to 779 and columns 0 to 1 from the "Seasonally Adjusted" sheet.
-df = data["Seasonally Adjusted"].iloc[0:780, 0:2]
-# Update the column headers
-df.columns = ["Month", "PHS"]
-# Get the phs `Series` by itself
-phs = df["PHS"]
-# Label the rows of `phs` by the month
-phs.index = df["Month"]
-
-# Do an initial exploratory plot
-plt.plot(phs)
-plt.show()
-
-# Find and display the autocorrelation function.
-correlAcf = acf(phs, nlags=10, alpha=0.05)
-acfDF = correlogramAsDataFrame(correlAcf)
-plotCorrelogram(acfDF)
-
-# Find and display the partial autocorrelation function.
-correlPacf = pacf(phs, nlags=10, alpha=0.05)
-pacfDF = correlogramAsDataFrame(correlPacf, partial=True)
-plotCorrelogram(pacfDF)
-
-# Order selection
-p = 1
-d = 1
-q = 2
-model = ARIMA(phs, order=(p, d, q))
-fitted_model = model.fit()
-print(fitted_model.summary())
-
-# Use AIC/BIC to determine the model order
-print(arma_order_select_ic(diffSeries(phs), max_ar=3, max_ma=5, ic=["aic", "bic"]))
-
-# Use the last `holdout` months as the out-of-sample holdout/validation data set
-holdout = 24
-train_phs = phs[:-holdout]
-test_phs = phs[-holdout:]
-
-# Use the `train_phs` data to fit an ARIMA model.
-p = 1
-d = 1
-q = 1
-pre_model_train = ARIMA(train_phs, order=(p, d, q), freq="MS")
-model_train = pre_model_train.fit()
-
-# Forecast the values for the times in `test_phs` using the `train_phs` data
-forecast = model_train.forecast(steps=holdout)
-forecast.name = "Forecast"
-
-# Define a convenience function to find the MAPE error metric
-def mape(forecast, actual):
-	return (abs(actual - forecast)/actual).mean()
-
-# Find the MAPE values
-mape_train = mape(model_train.fittedvalues, train_phs)
-mape_test = mape(forecast, test_phs)
-
-# Create a `DataFrame` with the actual values and the forecasted values for the holdout
-validate_phs = concat([test_phs, forecast], axis="columns")
-
-# Print the holdout `DataFrame` and the MAPE for both the training and testin data
-print("Actual and forecasted PHS:")
-print(validate_phs, '\n')
-print("MAPE for the training data:", mape_train)
-print("MAPE for the testing data:", mape_test, '\n')
-
-# Plot the actual data, fitted values (estimated from `train_phs`), and forecasted values (over the holdout)
-plt.plot(phs, color="gray", label="Actual")
-plt.plot(model_train.fittedvalues, color="black", linestyle="dashed", label="Fitted")
-plt.plot(forecast, color="black", linestyle="dotted", label="Forecasted")
-plt.legend()
-plt.show()
-
-# Print the summary of the fitted model (including the values of the smoothing constants)
-print(model_train.summary())
-								</code></pre>
-								<h4>SARIMAX Results</h4>
-								<table>
-									<thead>
-										<tr>
-											<th colspan="2">Dep. Variable:</th>
-											<td colspan="4">PHS</td>
-										</tr>
-										<tr>
-											<th colspan="2">No. Observations:</th>
-											<td colspan="4">756</td>
-										</tr>
-										<tr>
-											<th colspan="2">Model:</th>
-											<td colspan="4">ARIMA(1, 1, 1)</td>
-										</tr>
-										<tr>
-											<th colspan="2">Log Likelihood:</th>
-											<td colspan="4">-4610.091</td>
-										</tr>
-										<tr>
-											<th colspan="2">Date:</th>
-											<td colspan="4">Fri, 24 May 2024</td>
-										</tr>
-										<tr>
-											<th colspan="2">AIC:</th>
-											<td colspan="4">9226.181</td>
-										</tr>
-										<tr>
-											<th colspan="2">Time:</th>
-											<td colspan="4">20:50:07</td>
-										</tr>
-										<tr>
-											<th colspan="2">BIC:</th>
-											<td colspan="4">9240.061</td>
-										</tr>
-										<tr>
-											<th colspan="2">Sample:</th>
-											<td colspan="4">01-01-1959 - 12-01-2021</td>
-										</tr>
-										<tr>
-											<th colspan="2">HQIC:</th>
-											<td colspan="4">9231.528</td>
-										</tr>
-										<tr>
-											<th colspan="2">Covariance Type:</th>
-											<td colspan="4">opg</td>
-										</tr>
-									</thead>
-								</table>
-								<h4>Parameter Estimates</h4>
-								<table>
-									<thead>
-										<tr>
-											<th>Variable</th>
-											<th>Coefficient</th>
-											<th>Std. Error</th>
-											<th>z</th>
-											<th>P>|z|</th>
-											<th>[0.025</th>
-											<th>0.975]</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>ar.L1</td>
-											<td>-0.0273</td>
-											<td>0.093</td>
-											<td>-0.295</td>
-											<td>0.768</td>
-											<td>-0.209</td>
-											<td>0.154</td>
-										</tr>
-										<tr>
-											<td>ma.L1</td>
-											<td>-0.3161</td>
-											<td>0.088</td>
-											<td>-3.604</td>
-											<td>0.000</td>
-											<td>-0.488</td>
-											<td>-0.144</td>
-										</tr>
-										<tr>
-											<td>sigma2</td>
-											<td>1.18e+04</td>
-											<td>467.224</td>
-											<td>25.254</td>
-											<td>0.000</td>
-											<td>1.09e+04</td>
-											<td>1.27e+04</td>
-										</tr>
-									</tbody>
-								</table>
-								<h4>Diagnostic Tests</h4>
-								<table>
-
-									<tbody>
-										<tr>
-											<td>Ljung-Box (L1) (Q):</td>
-											<td>0.00</td>
-										</tr>
-										<tr>
-											<td>Prob(Q):</td>
-											<td>0.98</td>
-										</tr>
-										<tr>
-											<td>Jarque-Bera (JB):</td>
-											<td>81.01</td>
-										</tr>
-										<tr>
-											<td>Prob(JB):</td>
-											<td>0.00</td>
-										</tr>
-										<tr>
-											<td>Heteroskedasticity (H):</td>
-											<td>0.63</td>
-										</tr>
-										<tr>
-											<td>Prob(H) (two-sided):</td>
-											<td>0.00</td>
-										</tr>
-										<tr>
-											<td>Skew:</td>
-											<td>-0.29</td>
-										</tr>
-										<tr>
-											<td>Kurtosis:</td>
-											<td>4.50</td>
-										</tr>
-									</tbody>
-								</table>
-								<p>Conclusions on the results:</p>
-								<ol>
-									<li><b>Goodness of Fit:</b> The various criterion (AIC, BIC, and HQIC) are indicative of a better model.
-									The model appears to fit well from the data based on these metrics.</li>
-									<li><b>Coefficients:</b> Though the autoregressive term is not significant, the Moving Average term
-									suggests it is a very important part of the model.</li>
-									<li><b>Variance:</b> It should be noted that variance, however, is quite 
-										high, which suggests the model does not cover much of the variance in the data.</li>
-									<li><b>Ljung-Box Test</b> <i>(Diagnostic Test)</i><b>:</b> Suggests low autocorrelation, which 
-									is great for an ARIMA model.</li>
-									<li><b>Jarque-Bera Test</b> <i>(Diagnostic Test)</i><b>:</b> Residuals are not normally distributed,
-									meaning that forecasts using this model may not be evenly reliable.</li>
-									<li><b>Heteroskedasticity Test</b> <i>(Diagnostic Test)</i><b>:</b> Building upon the previous test, 
-									this value suggests that the residuals' variance is inconsistent, which can affect the model's ability 
-									to perform.</li>
-									<li><b>Skewness and Kurtosis Test</b> <i>(Diagnostic Test)</i><b>:</b> Negative skewness indicates that 
-										the residuals are skewed to the left. A kurtosis value greater than 3 indicates heavier tails than 
-										a normal distribution, suggesting outliers.</li>
-								</ol>
-								<p>What we can gather from this overall is that, although the model seems to encapsulate the data well, it is 
-									highly likely to falter in its current state if used for forecasting or actual business decisions. Some 
-									improvements can be made that can assist in fortifying the model.
-								</p>
-								<ul>
-									<li>Adding additional predictors could address the model not normally covering the patterns in the data.</li>
-									<li>Removing the AR term could prove fruitful  as it is seems to be unnecessary. This would also make the 
-										model easier to understand if it is not needed.
-									</li>
-									<li>As data is gathered from a real source, outliers or possibly structural changes in the data source will 
-										affect the results.
-									</li>
-								</ul>
-							</ul>
-						</div>
-						
-						<!-- Data Analytics Methods -->
-						<div class="project-item">
-							<h3>Data Analytics Methods</h3>
-							<ul>
-								<li><strong>NAIVE Method:</strong> Implemented this simple yet effective forecasting method in Python to provide baseline predictions for time series data. The method was used to compare the performance of more complex models and establish a benchmark for accuracy.
-									<pre><code class="language-python">
-import numpy as np
-import pandas as pd
-
-"""Here we type the UMICS data directly (We are entering the data directly for simplicity.)"""
-
-# The UMICS data
-actual = pd.Series([92.0, 91.7, 91.0, 89.0, 94.7, 93.5, 90.0, 89.8, 91.2, 87.2, 93.8, 98.2])
-
-forecast = pd.Series(np.ones(len(actual) + 1))                          # Create the column for the forecast
-forecast[0] = float("NaN") # No forecast here
-
-# Run the indented commands repeatedly, with the value of `i` ranging from 1 to `actual.size`
-for i in range(1, len(actual)+1):
-	forecast[i] = actual[i - 1]                                         # Use the naive method to create the forecast
-
-df = pd.DataFrame(data = {"Actual": actual, "Forecast": forecast})      # Create a DataFrame (like a spreadsheet)
-# Print the DataFrame
-print(df)
-
-error = df["Actual"] - df["Forecast"]                                   # The error column
-absError = abs(error)                                                   # The absolute error column
-absPctError = absError/df["Actual"] * 100                               # The absolute percentage error column
-mape = absPctError.mean()                                               # Find the mean absolute percentage error
-
-# Append the error, absolute error, and absolute percentage error columns to the DataFrame `df`
-df = pd.DataFrame(data = {**df, "Error": error, "Absolute Error": absError, "Absolute % Error": absPctError })
-# Print a formatted string (put Python variable names inside of `{}`)
-print(f"{df}\n\nMAPE: {mape}")
-									</code></pre>
-									<!-- Table for Results -->
-									<h4>Forecasting Results:</h4>
-									<table>
-										<thead>
-											<tr>
-												<th>Actual</th>
-												<th>Forecast</th>
-												<th>Error</th>
-												<th>Absolute Error</th>
-												<th>Absolute % Error</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>92.0</td>
-												<td>NaN</td>
-												<td>NaN</td>
-												<td>NaN</td>
-												<td>NaN</td>
-											</tr>
-											<tr>
-												<td>91.7</td>
-												<td>92.0</td>
-												<td>-0.3</td>
-												<td>0.3</td>
-												<td>0.327154</td>
-											</tr>
-											<tr>
-												<td>91.0</td>
-												<td>91.7</td>
-												<td>-0.7</td>
-												<td>0.7</td>
-												<td>0.769231</td>
-											</tr>
-											<tr>
-												<td>89.0</td>
-												<td>91.0</td>
-												<td>-2.0</td>
-												<td>2.0</td>
-												<td>2.247191</td>
-											</tr>
-											<tr>
-												<td>94.7</td>
-												<td>89.0</td>
-												<td>5.7</td>
-												<td>5.7</td>
-												<td>6.019007</td>
-											</tr>
-											<tr>
-												<td>93.5</td>
-												<td>94.7</td>
-												<td>-1.2</td>
-												<td>1.2</td>
-												<td>1.283422</td>
-											</tr>
-											<tr>
-												<td>90.0</td>
-												<td>93.5</td>
-												<td>-3.5</td>
-												<td>3.5</td>
-												<td>3.888889</td>
-											</tr>
-											<tr>
-												<td>89.8</td>
-												<td>90.0</td>
-												<td>-0.2</td>
-												<td>0.2</td>
-												<td>0.222717</td>
-											</tr>
-											<tr>
-												<td>91.2</td>
-												<td>89.8</td>
-												<td>1.4</td>
-												<td>1.4</td>
-												<td>1.535088</td>
-											</tr>
-											<tr>
-												<td>87.2</td>
-												<td>91.2</td>
-												<td>-4.0</td>
-												<td>4.0</td>
-												<td>4.587156</td>
-											</tr>
-											<tr>
-												<td>93.8</td>
-												<td>87.2</td>
-												<td>6.6</td>
-												<td>6.6</td>
-												<td>7.036247</td>
-											</tr>
-											<tr>
-												<td>98.2</td>
-												<td>93.8</td>
-												<td>4.4</td>
-												<td>4.4</td>
-												<td>4.480652</td>
-											</tr>
-											<tr>
-												<td>NaN</td>
-												<td>98.2</td>
-												<td>NaN</td>
-												<td>NaN</td>
-												<td>NaN</td>
-											</tr>
-										</tbody>
-									</table>
-									<p>MAPE: 2.9451594710015985</p>
-								</li>
-								<br>
-								<li><strong>Causal Regression:</strong> Applied causal regression analysis in Python to model and understand the relationships between dependent and independent variables. This method was utilized to identify key factors influencing specific outcomes and to predict future trends based on causal relationships.
-									<pre><code class="language-python">
-import numpy as np
-from numpy.random import default_rng
-from pandas import Series, concat
-import statsmodels.api as sm
-
-# Helpful in reproducing results
-random_seed_id = 42
-
-def simulate_topping_prices(topping="Ketchup", intercept=1.00, slope=0.042, sigma=0.021, num_weeks=56, rng=None):
-	if rng == None:
-		rng = default_rng()
-	epsilons = rng.normal(loc=0, scale=sigma, size=num_weeks)
-	times = np.arange(num_weeks)
-	prices = intercept + slope * times + epsilons
-	return Series(prices, name=f"{topping} Prices")
-
-def simulate_sandwich_sales(ketchup_prices, mustard_prices, intercept=5.00, coeff_ketchup=0.021, coeff_mustard=0.036, sigma=0.001, rng=None):
-	if rng == None:
-		rng = default_rng()
-	if len(ketchup_prices) != len(mustard_prices):
-		return None
-	epsilons = rng.normal(loc=0, scale=sigma, size=len(ketchup_prices))
-	sales = intercept + coeff_ketchup * ketchup_prices + coeff_mustard * mustard_prices + epsilons
-	return Series(sales, name="Sandwich Sales")
-
-rng=default_rng(seed=random_seed_id)
-ketchup_prices = simulate_topping_prices(topping="Ketchup", intercept=1.50, slope=0.004, sigma=0.02, rng=rng)
-mustard_prices = simulate_topping_prices(topping="Mustard", intercept=2.50, slope=0.008, sigma=0.01, rng=rng)
-sandwich_sales = simulate_sandwich_sales(ketchup_prices, mustard_prices, rng=rng)
-data=concat([sandwich_sales, ketchup_prices, mustard_prices], axis="columns")
-
-prices_data = data[["Ketchup Prices", "Mustard Prices"]]
-print(prices_data.head())
-
-x = sm.add_constant(data[["Ketchup Prices", "Mustard Prices"]])
-y = data["Sandwich Sales"]
-model = sm.OLS(y, x)
-fit = model.fit()
-print(fit.summary())
-
-print("The `x` values")
-print(x.head())
-print("The `y` values")
-print(y.head())
-									</code></pre>
-									<table>
-										<tbody>
-											<tr>
-												<td>Dep. Variable:</td>
-												<td>Sandwich Sales</td>
-											</tr>
-											<tr>
-												<td>R-squared:</td>
-												<td>0.971</td>
-											</tr>
-											<tr>
-												<td>Model:</td>
-												<td>OLS</td>
-											</tr>
-											<tr>
-												<td>Adj. R-squared:</td>
-												<td>0.970</td>
-											</tr>
-											<tr>
-												<td>Method:</td>
-												<td>Least Squares</td>
-											</tr>
-											<tr>
-												<td>F-statistic:</td>
-												<td>899.1</td>
-											</tr>
-											<tr>
-												<td>Date:</td>
-												<td>Fri, 24 May 2024</td>
-											</tr>
-											<tr>
-												<td>Prob (F-statistic):</td>
-												<td>1.28e-41</td>
-											</tr>
-											<tr>
-												<td>Time:</td>
-												<td>18:05:23</td>
-											</tr>
-											<tr>
-												<td>Log-Likelihood:</td>
-												<td>305.56</td>
-											</tr>
-											<tr>
-												<td>No. Observations:</td>
-												<td>56</td>
-											</tr>
-											<tr>
-												<td>AIC:</td>
-												<td>-605.1</td>
-											</tr>
-											<tr>
-												<td>Df Residuals:</td>
-												<td>53</td>
-											</tr>
-											<tr>
-												<td>BIC:</td>
-												<td>-599.0</td>
-											</tr>
-											<tr>
-												<td>Df Model:</td>
-												<td>2</td>
-											</tr>
-											<tr>
-												<td>Covariance Type:</td>
-												<td>nonrobust</td>
-											</tr>
-										</tbody>
-										<thead>
-											<tr>
-												<th colspan="2">Coefficients</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>const</td>
-												<td>coef: 5.0007, std err: 0.004, t: 1374.715, P>|t|: 0.000, [0.025: 4.993, 0.975: 5.008]</td>
-											</tr>
-											<tr>
-												<td>Ketchup Prices</td>
-												<td>coef: 0.0160, std err: 0.009, t: 1.820, P>|t|: 0.074, [0.025: -0.002, 0.975: 0.034]</td>
-											</tr>
-											<tr>
-												<td>Mustard Prices</td>
-												<td>coef: 0.0387, std err: 0.005, t: 8.438, P>|t|: 0.000, [0.025: 0.030, 0.975: 0.048]</td>
-											</tr>
-										</tbody>
-										<thead>
-											<tr>
-												<th colspan="2">Diagnostics</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>Omnibus:</td>
-												<td>4.707</td>
-											</tr>
-											<tr>
-												<td>Prob(Omnibus):</td>
-												<td>0.095</td>
-											</tr>
-											<tr>
-												<td>Durbin-Watson:</td>
-												<td>1.532</td>
-											</tr>
-											<tr>
-												<td>Jarque-Bera (JB):</td>
-												<td>4.090</td>
-											</tr>
-											<tr>
-												<td>Skew:</td>
-												<td>0.659</td>
-											</tr>
-											<tr>
-												<td>Prob(JB):</td>
-												<td>0.129</td>
-											</tr>
-											<tr>
-												<td>Kurtosis:</td>
-												<td>3.121</td>
-											</tr>
-											<tr>
-												<td>Cond. No.:</td>
-												<td>235</td>
-											</tr>
-										</tbody>
-									</table>
-									<p>To consider the results:</p>
-									<ol>
-										<li>Coefficients: The intercept of the model is very close to the true intercept of the simulation.
-											In addition, the Mustard Price coefficient indicates a strong statistical significance. 
-											This is further confirmed by the low p-value.</li>
-										<li>R-Squared: The high value of the R-squared statistic indicates good fit by strong capture of the
-											variance within the data.
-										</li>
-										<li>F-stat: A very high F-statistic with a near-zero p-value indicates 
-											that the model is statistically significant.</li>
-										<li>The estimates are indicated to be rather precise with the small standard errors.</li>
-										<li>Diagnostic Tests
-											<ul>
-												<li>Durbin-Watson: indicates a small degree of positive autocorrelation.</li>
-												<li>Omnibus, Jarque-Bera, Skew, and Kurtosis: the residuals might not be perfectly normally distributed.</li>
-											</ul>
-										</li>
-									</ol>
-									<p>Overall, the model is a relatively good fit, with notes that there may be a small degree of influence on
-										future performance based on past sales prices (small positive autocorrelation). It should be noted as well that
-										this model does possess minor issues with residual normality and the previously mentioned autocorrelation.
-									</p>
-								</li>
-								<br>
-								<li><strong>ARIMA Models:</strong> Developed ARIMA (AutoRegressive Integrated Moving Average) models using Python to forecast future values in time series data. This approach was employed to analyze historical data and generate predictions, focusing on economic indicators and other trend-sensitive datasets.
-									<pre><code class="language-python">
-from pandas import DataFrame, read_excel, concat
-from matplotlib import pyplot as plt
-from statsmodels.tsa.api import acf, pacf, ARIMA, arma_order_select_ic
-
-def correlogramAsDataFrame(correlogram, partial=False):
-	# Find the correlogram with confidence intervals for each lag
-	if partial:
-		label="PACF"
-	else:
-		label="ACF"
-	vals, confints = correlogram
-	# Separate the lower bounds and upper bounds of the confidence intervals
-	lower = confints.take(indices=0, axis=1)
-	upper = confints.take(indices=1, axis=1)
-
-	# Print the correlogram in text form for preciser reading
-	return DataFrame({label: vals, "Lower": lower, "Upper": upper})
-
-def plotCorrelogram(correlogram):
-	# Plot the correlogram with the confidence intervals for each lag
-	plt.plot(correlogram.iloc[:,0], color="gray", label=correlogram.columns[0])
-	plt.plot(correlogram[["Lower"]], color="black", linestyle="dashed", label="Lower")
-	plt.plot(correlogram[["Upper"]], color="black", linestyle="dotted", label="Upper")
-	plt.legend()
-	plt.show()
-
-def diffSeries(series):
-	return [series[i+1]-series[i] for i in range(len(series) - 1)]
-
-# Access the data set; `sheet_name=None` means import all sheets from the workbook.
-data=read_excel("https://www.census.gov/construction/nrc/xls/starts_cust.xlsx", sheet_name=None, header=[5, 5, 5, 5])
-
-# Extract rows 0 to 779 and columns 0 to 1 from the "Seasonally Adjusted" sheet.
-df = data["Seasonally Adjusted"].iloc[0:780, 0:2]
-# Update the column headers
-df.columns = ["Month", "PHS"]
-# Get the phs `Series` by itself
-phs = df["PHS"]
-# Label the rows of `phs` by the month
-phs.index = df["Month"]
-
-# Do an initial exploratory plot
-plt.plot(phs)
-plt.show()
-
-# Find and display the autocorrelation function.
-correlAcf = acf(phs, nlags=10, alpha=0.05)
-acfDF = correlogramAsDataFrame(correlAcf)
-plotCorrelogram(acfDF)
-
-# Find and display the partial autocorrelation function.
-correlPacf = pacf(phs, nlags=10, alpha=0.05)
-pacfDF = correlogramAsDataFrame(correlPacf, partial=True)
-plotCorrelogram(pacfDF)
-
-# Order selection
-p = 1
-d = 1
-q = 2
-model = ARIMA(phs, order=(p, d, q))
-fitted_model = model.fit()
-print(fitted_model.summary())
-
-# Use AIC/BIC to determine the model order
-print(arma_order_select_ic(diffSeries(phs), max_ar=3, max_ma=5, ic=["aic", "bic"]))
-
-# Use the last `holdout` months as the out-of-sample holdout/validation data set
-holdout = 24
-train_phs = phs[:-holdout]
-test_phs = phs[-holdout:]
-
-# Use the `train_phs` data to fit an ARIMA model.
-p = 1
-d = 1
-q = 1
-pre_model_train = ARIMA(train_phs, order=(p, d, q), freq="MS")
-model_train = pre_model_train.fit()
-
-# Forecast the values for the times in `test_phs` using the `train_phs` data
-forecast = model_train.forecast(steps=holdout)
-forecast.name = "Forecast"
-
-# Define a convenience function to find the MAPE error metric
-def mape(forecast, actual):
-	return (abs(actual - forecast)/actual).mean()
-
-# Find the MAPE values
-mape_train = mape(model_train.fittedvalues, train_phs)
-mape_test = mape(forecast, test_phs)
-
-# Create a `DataFrame` with the actual values and the forecasted values for the holdout
-validate_phs = concat([test_phs, forecast], axis="columns")
-
-# Print the holdout `DataFrame` and the MAPE for both the training and testin data
-print("Actual and forecasted PHS:")
-print(validate_phs, '\n')
-print("MAPE for the training data:", mape_train)
-print("MAPE for the testing data:", mape_test, '\n')
-
-# Plot the actual data, fitted values (estimated from `train_phs`), and forecasted values (over the holdout)
-plt.plot(phs, color="gray", label="Actual")
-plt.plot(model_train.fittedvalues, color="black", linestyle="dashed", label="Fitted")
-plt.plot(forecast, color="black", linestyle="dotted", label="Forecasted")
-plt.legend()
-plt.show()
-
-# Print the summary of the fitted model (including the values of the smoothing constants)
-print(model_train.summary())
-									</code></pre>
-									<h4>SARIMAX Results</h4>
-									<table>
-										<thead>
-											<tr>
-												<th colspan="2">Dep. Variable:</th>
-												<td colspan="4">PHS</td>
-											</tr>
-											<tr>
-												<th colspan="2">No. Observations:</th>
-												<td colspan="4">756</td>
-											</tr>
-											<tr>
-												<th colspan="2">Model:</th>
-												<td colspan="4">ARIMA(1, 1, 1)</td>
-											</tr>
-											<tr>
-												<th colspan="2">Log Likelihood:</th>
-												<td colspan="4">-4610.091</td>
-											</tr>
-											<tr>
-												<th colspan="2">Date:</th>
-												<td colspan="4">Fri, 24 May 2024</td>
-											</tr>
-											<tr>
-												<th colspan="2">AIC:</th>
-												<td colspan="4">9226.181</td>
-											</tr>
-											<tr>
-												<th colspan="2">Time:</th>
-												<td colspan="4">20:50:07</td>
-											</tr>
-											<tr>
-												<th colspan="2">BIC:</th>
-												<td colspan="4">9240.061</td>
-											</tr>
-											<tr>
-												<th colspan="2">Sample:</th>
-												<td colspan="4">01-01-1959 - 12-01-2021</td>
-											</tr>
-											<tr>
-												<th colspan="2">HQIC:</th>
-												<td colspan="4">9231.528</td>
-											</tr>
-											<tr>
-												<th colspan="2">Covariance Type:</th>
-												<td colspan="4">opg</td>
-											</tr>
-										</thead>
-									</table>
-									<h4>Parameter Estimates</h4>
-									<table>
-										<thead>
-											<tr>
-												<th>Variable</th>
-												<th>Coefficient</th>
-												<th>Std. Error</th>
-												<th>z</th>
-												<th>P>|z|</th>
-												<th>[0.025</th>
-												<th>0.975]</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>ar.L1</td>
-												<td>-0.0273</td>
-												<td>0.093</td>
-												<td>-0.295</td>
-												<td>0.768</td>
-												<td>-0.209</td>
-												<td>0.154</td>
-											</tr>
-											<tr>
-												<td>ma.L1</td>
-												<td>-0.3161</td>
-												<td>0.088</td>
-												<td>-3.604</td>
-												<td>0.000</td>
-												<td>-0.488</td>
-												<td>-0.144</td>
-											</tr>
-											<tr>
-												<td>sigma2</td>
-												<td>1.18e+04</td>
-												<td>467.224</td>
-												<td>25.254</td>
-												<td>0.000</td>
-												<td>1.09e+04</td>
-												<td>1.27e+04</td>
-											</tr>
-										</tbody>
-									</table>
-									<h4>Diagnostic Tests</h4>
-									<table>
-
-										<tbody>
-											<tr>
-												<td>Ljung-Box (L1) (Q):</td>
-												<td>0.00</td>
-											</tr>
-											<tr>
-												<td>Prob(Q):</td>
-												<td>0.98</td>
-											</tr>
-											<tr>
-												<td>Jarque-Bera (JB):</td>
-												<td>81.01</td>
-											</tr>
-											<tr>
-												<td>Prob(JB):</td>
-												<td>0.00</td>
-											</tr>
-											<tr>
-												<td>Heteroskedasticity (H):</td>
-												<td>0.63</td>
-											</tr>
-											<tr>
-												<td>Prob(H) (two-sided):</td>
-												<td>0.00</td>
-											</tr>
-											<tr>
-												<td>Skew:</td>
-												<td>-0.29</td>
-											</tr>
-											<tr>
-												<td>Kurtosis:</td>
-												<td>4.50</td>
-											</tr>
-										</tbody>
-									</table>
-									<p>Conclusions on the results:</p>
-									<ol>
-										<li><b>Goodness of Fit:</b> The various criterion (AIC, BIC, and HQIC) are indicative of a better model.
-										The model appears to fit well from the data based on these metrics.</li>
-										<li><b>Coefficients:</b> Though the autoregressive term is not significant, the Moving Average term
-										suggests it is a very important part of the model.</li>
-										<li><b>Variance:</b> It should be noted that variance, however, is quite 
-											high, which suggests the model does not cover much of the variance in the data.</li>
-										<li><b>Ljung-Box Test</b> <i>(Diagnostic Test)</i><b>:</b> Suggests low autocorrelation, which 
-										is great for an ARIMA model.</li>
-										<li><b>Jarque-Bera Test</b> <i>(Diagnostic Test)</i><b>:</b> Residuals are not normally distributed,
-										meaning that forecasts using this model may not be evenly reliable.</li>
-										<li><b>Heteroskedasticity Test</b> <i>(Diagnostic Test)</i><b>:</b> Building upon the previous test, 
-										this value suggests that the residuals' variance is inconsistent, which can affect the model's ability 
-										to perform.</li>
-										<li><b>Skewness and Kurtosis Test</b> <i>(Diagnostic Test)</i><b>:</b> Negative skewness indicates that 
-											the residuals are skewed to the left. A kurtosis value greater than 3 indicates heavier tails than 
-											a normal distribution, suggesting outliers.</li>
-									</ol>
-									<p>What we can gather from this overall is that, although the model seems to encapsulate the data well, it is 
-										highly likely to falter in its current state if used for forecasting or actual business decisions. Some 
-										improvements can be made that can assist in fortifying the model.
-									</p>
-									<ul>
-										<li>Adding additional predictors could address the model not normally covering the patterns in the data.</li>
-										<li>Removing the AR term could prove fruitful  as it is seems to be unnecessary. This would also make the 
-											model easier to understand if it is not needed.
-										</li>
-										<li>As data is gathered from a real source, outliers or possibly structural changes in the data source will 
-											affect the results.
-										</li>
-									</ul>
-								</li>
-							</ul>
-						</div>
-					</div>
-
-					<div id="tab4" class="tab-content">
-						<!-- Personal Projects -->
-						
-						<!-- YouTube Data Pipeline -->
-						<div class="project-item">
-							<h3>YouTube Data Pipeline</h3>
-							<ul>
-								<li>Set up a miniature data pipeline using MySQL Server and YouTube API to gather video data and metadata from Youtube.</li>
-								<li>Utilized shell scripts and Python data analysis to determine trends in data and automatically update on a weekly basis.</li>
-							</ul>
-						</div>
-						
-						<!-- Steam Google Link Task Manager -->
-						<div class="project-item">
-							<h3>Steam Google Link Task Manager</h3>
-							<ul>
-								<li>Utilized Steam's API to create a Google Workspace that links to a large STEAM database and queries for records associated with user accounts.</li>
-								<li>Developed a custom Appscript (JS) that gathers, dedupes, and reorganizes records into tasks visible only to the appropriate user.</li>
-								<li>Enabled users to mark task progress and completion, with interactive boards responding to input, archiving old tasks, and color-coding priorities.</li>
-								<li>Tasks sync between users when appropriate, with updates running daily on Google servers, efficiently processing over 1,000 records per user.</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</section>
-		</div>
-
-		<div class="content-container">
-			<!-- Experience Section -->
-			<section id="experience">
-				<div class="container">
-					<h2>Work Experience</h2>
-
-					<div class="experience-item">
-						<h3>Intake Specialist</h3>
-						<p>Benedictine University, Lisle, IL | Sept 2024 – May 2025</p>
-						<ul>
-							<li>Coordinated communication between external parties and internal departments to support admissions workflows.</li>
-							<li>Interpreted and navigated reports, transcripts, and information requests to provide accurate solutions for prospective students.</li>
-							<li>Fostered seamless connections across the admissions team and university leadership.</li>
-							<li>Delivered campus walkthroughs with clarity and consistency, often serving as the initial point of contact for new visitors and prospects.</li>
-						</ul>
-					</div>
-
-					<div class="experience-item">
-						<h3>Animator/Owner (Part-Time)</h3>
-						<p>Nyr Animation Studio, Plainfield, IL | January 2023 – Present</p>
-						<ul>
-							<li>Worked for over 30 commercial and private clients utilizing several tools like Blender and Cinema4D.</li>
-							<li>Produced 60+ models and animations according to custom specifications and changing demand.</li>
-							<li>Maintained ongoing communication with at least 3 clients simultaneously on average to manage evolving project requirements and deliver high-quality assets on time.</li>
-						</ul>
-					</div>
-
-					<div class="experience-item">
-						<h3>Development Intern</h3>
-						<p>Moksha Data, Houston, TX | June 2022 – August 2022</p>
-						<ul>
-							<li>Engineered phonetic sorting algorithms to streamline processing of over 1TB of data per unit of time.</li>
-							<li>Audited and optimized a 15-step data pipeline using Python, AWS, and Redshift to improve processing efficiency.</li>
-							<li>Constructed high-speed links between SQL databases, enabling rapid processing of big data.</li>
-						</ul>
-					</div>
-
-					<div class="experience-item">
-						<h3>Marketing Communications Manager</h3>
-						<p>CultureU, Bloomington, IN | September 2019 – May 2020</p>
-						<ul>
-							<li>Lead a team and collaborated directly with executive leadership to implement three company-wide marketing initiatives.</li>
-							<li>Directed the development of the startup’s brand identity and led the launch of its initial marketing campaign.</li>
-							<li>Evaluated and approved product pricing and promotional strategies prior to rollout.</li>
-						</ul>
-					</div>
-
-					<div class="experience-item">
-						<h3>Beta Tester & Game Design Consultant</h3>
-						<p>Freelance Worker, Lombard, IL | January 2014 – July 2019</p>
-						<ul>
-							<li>Analyzed 30+ games to assess engagement, market potential, and design flaws.</li>
-							<li>Advised development teams on aligning product features with current trends and target audiences.</li>
-							<li>Partnered with studios including Creative Assembly and Bethesda, as well as several indie developers.</li>
-						</ul>
-					</div>
-				</div>
-			</section>
-		</div>
-		
-		<div class="content-container">
-			<section id="other-experiences">
-				<div class="container">
-					<h2>Other Experiences</h2>
-					
-					<!-- Music Composition Entry -->
-					<div class="experience-item">
-						<h3>Music Composer</h3>
-						<p><strong>Freelance</strong> – January 2016 – Present</p>
-						<ul>
-							<li>Composed original music pieces across various genres, including classical, electronic, and ambient.</li>
-							<li>Collaborated with artists, filmmakers, and game developers to create custom soundtracks and scores.</li>
-							<li>Produced and mixed tracks using industry-standard software and techniques.</li>
-							<li>Gained recognition through a growing portfolio and multiple projects on SoundCloud.</li>
-						</ul>
-						<p>Listen to my work on <a href="https://soundcloud.com/naryan-aggarwal" target="_blank" rel="noopener noreferrer">SoundCloud</a>.</p>
-					</div>
-					
-					 <!-- Innovation DuPage Incubator Project -->
-					<div class="experience-item">
-						<h3>Student Participant</h3>
-						<p>Innovation DuPage Incubator, Lombard, IL | August 2018 – June 2019</p>
-						<ul>
-							<li>Founded a private sports accessory company as the CEO.</li>
-							<li>Presented in a shark tank to investors, earning 2nd place among 7 companies.</li>
-						</ul>
-					</div>
-
-					<!-- Carnegie Mellon University AI Research Program Project -->
-					<div class="experience-item">
-						<h3>Student Participant</h3>
-						<p>Carnegie Mellon University – Precollege AI Research Program, Pittsburgh, PA | July 2018</p>
-						<ul>
-							<li>Rebuilt from scratch the Anki Cosmo SDK for the Cosmo robotic companion.</li>
-							<li>Researched intuitive decision-making in robotics using the Cosmo AI.</li>
-						</ul>
-					</div>
-
-					<!-- GSC Technology Company Project -->
-					<div class="experience-item">
-						<h3>Student Participant</h3>
-						<p>GSC Technology Company, Oakbrook, IL | August 2017</p>
-						<ul>
-							<li>Attended a 48-hour professional training course in mechanical 3D modeling using Solidworks.</li>
-							<li>Created dynamic and functional digital prototype models for 5+ mechanical devices.</li>
-							<li>Learned optimization techniques for 3D printing with mobile parts.</li>
-						</ul>
-					</div>
-				</div>
-			</section>
-		</div>
-		
-		<div class="content-container">
-			<!-- Contact Section -->
-			<section id="contact">
-				<div class="container">
-					<h2>Contact</h2>
-					<p>If you would like to get in touch, please feel free to email me at <a href="mailto:naryantaggarwal@gmail.com">naryantaggarwal@gmail.com</a> or connect with me on <a href="#">LinkedIn</a>.</p>
-				</div>
-			</section>
-
-			<!-- Footer -->
-			<footer>
-				<div class="container">
-					<p>&copy; 2025 Naryan Aggarwal. All Rights Reserved.</p>
-				</div>
-			</footer>
-		</div>
-	</div>
-	
-	<script src="scripts.js"></script>
+<!-- ── NAVBAR ─────────────────────────────────────────────── -->
+<nav>
+  <span class="nav-logo">Naryan <span>Aggarwal</span></span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" class="mob-link">About</a>
+  <a href="#experience" class="mob-link">Experience</a>
+  <a href="#projects" class="mob-link">Projects</a>
+  <a href="#skills" class="mob-link">Skills</a>
+  <a href="#education" class="mob-link">Education</a>
+  <a href="#contact" class="mob-link">Contact</a>
+</div>
+
+<div class="page-wrap">
+
+  <!-- ── HERO ───────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">Business Data Analyst &amp; Automation Specialist</div>
+      <h1 class="hero-name">Naryan<br><em>Aggarwal.</em></h1>
+      <p class="hero-bio">
+        I help companies grow through data analytics, intelligent automation, and AI-driven solutions.
+        Graduated cum laude in Business Analytics — passionate about turning complex datasets into decisions that move organizations forward.
+      </p>
+      <div class="hero-actions">
+        <a href="#experience" class="btn btn-primary">View My Work</a>
+        <a href="https://www.linkedin.com/in/naryana/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn ↗</a>
+        <a href="mailto:naryantaggarwal@gmail.com" class="btn btn-ghost">Email Me</a>
+      </div>
+      <div class="hero-pills">
+        <span class="pill">Python</span>
+        <span class="pill">SQL</span>
+        <span class="pill">Data Analytics</span>
+        <span class="pill">LLM &amp; Automation</span>
+        <span class="pill">Business Analysis</span>
+        <span class="pill">Airtable · n8n · Supabase</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ───────────────────────────────────────────── -->
+  <section id="about">
+    <div class="section-label">About</div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>
+          I'm a <strong>Business Data Analyst</strong> based in Plainfield, IL, with a background spanning data pipelines, AI automation, and strategic analytics. I enjoy finding opportunities for businesses to grow and delivering solutions that are both technically sound and human-centered.
+        </p>
+        <p>
+          My recent work includes rebuilding automation infrastructure for a cabinetry firm, delivering AI-driven content solutions that saved over <strong>$30K</strong> for a 4,500-page website, and presenting enrollment analytics directly to a university president and board of trustees.
+        </p>
+        <p>
+          Outside of data, I compose music, do 3D animation, and have competed in startup incubator programs. I bring creativity and attention to detail to everything I build.
+        </p>
+      </div>
+      <div class="about-cards">
+        <div class="stat-card">
+          <div class="num">$30K+</div>
+          <div class="lbl">Cost savings delivered via AI-driven automation</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">4,500+</div>
+          <div class="lbl">Web pages updated with LLM-generated content</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">50%</div>
+          <div class="lbl">Reduction in sales team response time via data pipeline</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">40%</div>
+          <div class="lbl">Projected increase in enrollment capture (university analysis)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EXPERIENCE ──────────────────────────────────────── -->
+  <section id="experience">
+    <div class="section-label">Experience</div>
+    <div class="exp-list reveal">
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-date">Sep 2025 –<br>Feb 2026</div>
+          <div class="exp-company">Pentwater Cabinetry</div>
+        </div>
+        <div class="exp-body">
+          <div class="exp-title">Data &amp; Automation Systems Consultant <span class="exp-tag">New</span></div>
+          <ul class="exp-desc">
+            <li>Built an optimized data pipeline connecting Airtable, n8n, and Supabase with webhook-triggered updates, reducing sales team response time by 50%.</li>
+            <li>Rebuilt automation system on Supabase, adding capacity for AI-driven enhancements and workflow scalability.</li>
+            <li>Analyzed sales operations to identify key bottlenecks and collaborated with stakeholders to implement targeted solutions.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-date">May 2025 –<br>Dec 2025</div>
+          <div class="exp-company">Freelance</div>
+        </div>
+        <div class="exp-body">
+          <div class="exp-title">LLM &amp; Automation Specialist <span class="exp-tag">New</span></div>
+          <ul class="exp-desc">
+            <li>Delivered approximately $30K+ in cost savings for a 4,500+ page website by implementing an AI-driven content refresh solution.</li>
+            <li>Trained an LLM to merge internal and public data with unique writing styles on each page, prioritizing accuracy and readability.</li>
+            <li>Developed a Python GUI to empower non-technical stakeholders to implement future content updates independently.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-date">Feb 2025 –<br>May 2025</div>
+          <div class="exp-company">Benedictine University</div>
+        </div>
+        <div class="exp-body">
+          <div class="exp-title">Data Analyst</div>
+          <ul class="exp-desc">
+            <li>Led a campus-wide enrollment analytics initiative addressing a 30% retention decline.</li>
+            <li>Presented findings to the University President and Board of Trustees, influencing strategic decisions projected to increase enrollment capture by 40%.</li>
+            <li>Conducted in-depth market research, competitor analysis, and SWOT analysis across multiple university departments.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-date">Sep 2024 –<br>May 2025</div>
+          <div class="exp-company">Benedictine University</div>
+        </div>
+        <div class="exp-body">
+          <div class="exp-title">Intake Specialist</div>
+          <ul class="exp-desc">
+            <li>Coordinated communication between external parties and internal departments to support admissions workflows.</li>
+            <li>Interpreted reports, transcripts, and information requests to provide accurate solutions for prospective students.</li>
+            <li>Delivered campus walkthroughs and served as the initial point of contact for new visitors and prospects.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-date">Jan 2023 –<br>Present</div>
+          <div class="exp-company">Nyr Animation Studio</div>
+        </div>
+        <div class="exp-body">
+          <div class="exp-title">Animator / Owner (Part-Time)</div>
+          <ul class="exp-desc">
+            <li>Served 30+ commercial and private clients using Blender and Cinema4D.</li>
+            <li>Produced 60+ models and animations to custom specifications with concurrent client management.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-date">Jun –<br>Aug 2022</div>
+          <div class="exp-company">Moksha Data</div>
+        </div>
+        <div class="exp-body">
+          <div class="exp-title">Development Intern</div>
+          <ul class="exp-desc">
+            <li>Engineered phonetic sorting algorithms to streamline processing of over 1TB of data per unit of time.</li>
+            <li>Audited and optimized a 15-step data pipeline using Python, AWS, and Redshift to improve processing efficiency.</li>
+            <li>Built high-speed links between SQL databases enabling rapid big data processing.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-date">Sep 2019 –<br>May 2020</div>
+          <div class="exp-company">CultureU</div>
+        </div>
+        <div class="exp-body">
+          <div class="exp-title">Marketing Communications Manager</div>
+          <ul class="exp-desc">
+            <li>Led a team in collaboration with executive leadership to implement three company-wide marketing initiatives.</li>
+            <li>Directed brand identity development and launched the startup's initial marketing campaign.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── PROJECTS ────────────────────────────────────────── -->
+  <section id="projects">
+    <div class="section-label">Projects</div>
+    <div class="reveal">
+      <div class="proj-tabs">
+        <button class="tab-btn active" data-tab="recent">Recent</button>
+        <button class="tab-btn" data-tab="work">Work</button>
+        <button class="tab-btn" data-tab="academic">Academic</button>
+        <button class="tab-btn" data-tab="personal">Personal</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-recent">
+        <div class="proj-grid">
+          <div class="proj-card">
+            <h3>Enrollment Data Analysis</h3>
+            <ul>
+              <li>Extracted, transformed, and visualized five years of enrollment data in Tableau to identify trends across demographics, retention rates, and academic programs.</li>
+              <li>Identified and addressed a 30% drop in student retention; presented actionable insights that contributed to measurable recovery efforts.</li>
+              <li>Recommended strategic actions influencing executive decision-making and projected to increase student capture by 40%.</li>
+              <li>Integrated demographic, labor market, and tuition perception data to align recommendations with Chicago-area student expectations.</li>
+            </ul>
+          </div>
+          <div class="proj-card">
+            <h3>Clinical Website Text Analysis &amp; Update <span class="exp-tag">Freelance</span></h3>
+            <ul>
+              <li>Processed data for 4,500+ U.S. cities using Python, Excel, and Shell scripting, sourcing up-to-date statistics from the CDC.</li>
+              <li>Developed automated workflows to clean, transform, and analyze public health data for consistency across all entries.</li>
+              <li>Trained an LLM to generate distinct, human-readable city-level summaries, saving approximately $30K+ in manual content costs.</li>
+            </ul>
+          </div>
+          <div class="proj-card">
+            <h3>Airtable–n8n–Supabase Data Pipeline <span class="exp-tag">Pentwater Cabinetry</span></h3>
+            <ul>
+              <li>Designed and built a webhook-triggered pipeline connecting Airtable, n8n, and Supabase, improving database efficiency and cutting sales team response time by 50%.</li>
+              <li>Rebuilt the automation system on Supabase to add capacity for AI-driven enhancements and scalable workflow automation.</li>
+              <li>Analyzed sales operations to identify key bottlenecks and collaborated with stakeholders to implement targeted solutions.</li>
+            </ul>
+          </div>
+          <div class="proj-card">
+            <h3>Health Clinic Data Analysis</h3>
+            <ul>
+              <li>Applied NLP in Python across 20,000+ clinic records nationwide.</li>
+              <li>Created visualizations at city, state, and national levels; performed large-scale de-duplication to enhance data accuracy.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-work">
+        <div class="proj-grid">
+          <div class="proj-card">
+            <h3>Airtable–n8n–Supabase Data Pipeline <span class="exp-tag">Pentwater Cabinetry</span></h3>
+            <ul>
+              <li>Designed and built a webhook-triggered pipeline connecting Airtable, n8n, and Supabase, improving database efficiency and cutting sales response time by 50%.</li>
+              <li>Rebuilt the automation system to support AI-driven workflow enhancements at scale.</li>
+            </ul>
+          </div>
+          <div class="proj-card">
+            <h3>Moksha Data Pipeline Optimization <span class="exp-tag">Moksha Data</span></h3>
+            <ul>
+              <li>Audited and optimized a 15-step data pipeline using Python, AWS, and Redshift.</li>
+              <li>Engineered phonetic sorting algorithms processing 1TB+ of data; built high-speed SQL database links.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-academic">
+        <div class="proj-grid">
+          <div class="proj-card">
+            <h3>Benedictine University Enrollment Strategy</h3>
+            <ul>
+              <li>Led campus-wide analytics initiative; presented findings directly to University President and Board of Trustees.</li>
+              <li>SWOT and competitor analysis resulted in strategic decisions projected to increase enrollment capture by 40%.</li>
+            </ul>
+          </div>
+          <div class="proj-card">
+            <h3>Game Theory &amp; Nash Equilibrium Analysis</h3>
+            <ul>
+              <li>Analyzed strategic decision-making in prisoner's dilemma, battle of the sexes, and coordination games.</li>
+              <li>Used Excel-based payoff matrices and scenario modeling to determine dominant strategies and equilibria.</li>
+            </ul>
+          </div>
+          <div class="proj-card">
+            <h3>Anki Cosmo SDK Rebuild <span class="exp-tag">Carnegie Mellon</span></h3>
+            <ul>
+              <li>Rebuilt the Anki Cosmo SDK from scratch during CMU's precollege AI research program.</li>
+              <li>Researched intuitive decision-making in robotics using the Cosmo AI platform.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-personal">
+        <div class="proj-grid">
+          <div class="proj-card">
+            <h3>YouTube Data Pipeline</h3>
+            <ul>
+              <li>Built a miniature data pipeline using MySQL Server and the YouTube API to gather video data and metadata.</li>
+              <li>Automated weekly updates via shell scripts and Python analysis to surface trending insights.</li>
+            </ul>
+          </div>
+          <div class="proj-card">
+            <h3>Steam Google Link Task Manager</h3>
+            <ul>
+              <li>Used the Steam API to build a Google Workspace integration querying a large Steam database for user-linked records.</li>
+              <li>Developed a custom AppScript (JS) to gather, de-dupe, and reorganize records into interactive task boards — color-coded by priority — syncing between users daily and processing 1,000+ records per user.</li>
+            </ul>
+          </div>
+          <div class="proj-card">
+            <h3>Music Composition Portfolio <span class="exp-tag">Freelance</span></h3>
+            <ul>
+              <li>Composed original pieces across classical, electronic, and ambient genres for artists, filmmakers, and game developers.</li>
+              <li>Portfolio available on <a href="https://soundcloud.com/naryan-aggarwal" target="_blank" rel="noopener">SoundCloud ↗</a>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SKILLS ──────────────────────────────────────────── -->
+  <section id="skills">
+    <div class="section-label">Skills</div>
+    <div class="skills-grid reveal">
+      <div class="skill-block">
+        <h3>Programming &amp; Data</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">R</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">HTML / CSS</span>
+          <span class="skill-tag">Bash / Shell</span>
+          <span class="skill-tag">Java</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <h3>Automation &amp; AI</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">LLM Integration</span>
+          <span class="skill-tag">n8n</span>
+          <span class="skill-tag">Airtable</span>
+          <span class="skill-tag">Supabase</span>
+          <span class="skill-tag">Webhook Automation</span>
+          <span class="skill-tag">Postman API</span>
+          <span class="skill-tag">Generative AI</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <h3>Analytics &amp; Visualization</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Tableau</span>
+          <span class="skill-tag">Excel / MS Suite</span>
+          <span class="skill-tag">Matplotlib</span>
+          <span class="skill-tag">Seaborn</span>
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">AWS Redshift</span>
+          <span class="skill-tag">ARIMA / Regression</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <h3>Business &amp; Soft Skills</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Business Analysis</span>
+          <span class="skill-tag">Stakeholder Management</span>
+          <span class="skill-tag">Visual Storytelling</span>
+          <span class="skill-tag">SWOT Analysis</span>
+          <span class="skill-tag">Communication</span>
+          <span class="skill-tag">Project Management</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EDUCATION ───────────────────────────────────────── -->
+  <section id="education">
+    <div class="section-label">Education &amp; Certifications</div>
+    <div class="reveal">
+      <div class="edu-card">
+        <div>
+          <h3>Bachelor of Business Administration<br>— Business Analytics</h3>
+          <div class="school">Benedictine University, Lisle, IL</div>
+          <div class="edu-meta">Aug 2022 – May 2025 &nbsp;·&nbsp; Graduated Cum Laude</div>
+        </div>
+        <div class="edu-badge">
+          <div class="gpa">3.5</div>
+          <div class="gpa-lbl">GPA</div>
+        </div>
+      </div>
+
+      <div class="cert-list">
+        <div class="cert-item">
+          <div class="cert-icon">✦</div>
+          <div>
+            <div class="cert-name">Generative AI — Microsoft</div>
+            <div class="cert-issuer">Jul 2025 – Jul 2026 &nbsp;·&nbsp; Understanding &amp; implementation of generative AI in business solutions</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon">✦</div>
+          <div>
+            <div class="cert-name">Postman API — Postman</div>
+            <div class="cert-issuer">Aug 2025 – Aug 2026 &nbsp;·&nbsp; Proficiency in the Postman REST API framework</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ─────────────────────────────────────────── -->
+  <section id="contact">
+    <div class="contact-block reveal">
+      <h2>Let's work together.</h2>
+      <p>I'm open to consulting engagements, full-time opportunities, and interesting projects in data analytics, automation, and AI solutions.</p>
+      <div class="contact-links">
+        <a href="mailto:naryantaggarwal@gmail.com" class="btn btn-primary">naryantaggarwal@gmail.com</a>
+        <a href="https://www.linkedin.com/in/naryana/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn ↗</a>
+        <a href="https://naryantaggarwal.github.io" target="_blank" rel="noopener" class="btn btn-ghost">GitHub Pages ↗</a>
+        <a href="https://soundcloud.com/naryan-aggarwal" target="_blank" rel="noopener" class="btn btn-ghost">SoundCloud ↗</a>
+      </div>
+      <p style="margin-top:1.5rem; font-size:0.82rem; color:var(--muted);">(630) 433-7783 &nbsp;·&nbsp; Plainfield, IL &nbsp;·&nbsp; English &amp; French</p>
+    </div>
+  </section>
+
+</div><!-- /page-wrap -->
+
+<footer>
+  <p>&copy; 2026 Naryan Aggarwal. All rights reserved.</p>
+</footer>
+
+<script>
+  // ── Hamburger ──────────────────────────────────
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  document.querySelectorAll('.mob-link').forEach(l => {
+    l.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  // ── Project Tabs ───────────────────────────────
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + id).classList.add('active');
+    });
+  });
+
+  // ── Scroll reveal ──────────────────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 
 </body>
-
 </html>
